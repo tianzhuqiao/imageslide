@@ -4,16 +4,19 @@ import android.content.Context
 import android.os.Bundle
 import android.util.AttributeSet
 import android.view.*
-import android.view.LayoutInflater
 import android.widget.FrameLayout
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.customview.widget.ViewDragHelper
 import androidx.fragment.app.Fragment
+import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.asksira.loopingviewpager.LoopingPagerAdapter
 import com.ortiz.touchview.TouchImageView
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_image_slide.*
+import kotlinx.android.synthetic.main.fragment_image_slide.*
+import kotlin.collections.ArrayList
+
 
 class ImageSlideItem {
     var resId: Int = 0
@@ -147,6 +150,7 @@ open class ImageSlideFragment : Fragment(), PullFrameLayout.Callback {
     interface ImageSlideCallBack {
         fun onImageSlideHide(hide: Boolean)
         fun onImageSlideLongClick(image: ImageSlideItem, index: Int)
+        fun onImageSliceSelected(index: Int)
     }
 
     private var callback: ImageSlideCallBack? = null
@@ -157,7 +161,7 @@ open class ImageSlideFragment : Fragment(), PullFrameLayout.Callback {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_image_slide, container, false)
+        return inflater.inflate(R.layout.fragment_image_slide, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -192,6 +196,21 @@ open class ImageSlideFragment : Fragment(), PullFrameLayout.Callback {
         viewPager?.onIndicatorProgress = { selectingPosition, progress ->
             pageIndicatorView?.onPageScrolled(selectingPosition, progress, 0)
         }
+
+        viewPager?.addOnPageChangeListener(object : OnPageChangeListener {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+            }
+
+            override fun onPageSelected(position: Int) {
+                callback?.onImageSliceSelected(position)
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {}
+        })
     }
 
     override fun onPullEnabled(): Boolean {
@@ -226,7 +245,6 @@ open class ImageSlideFragment : Fragment(), PullFrameLayout.Callback {
         this.callback = callback
         val adapt = viewPager?.adapter as? ImageViewAdapter
         adapt?.setCallBack(callback)
-
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -315,5 +333,63 @@ fun ImageView.loadImageItem(image: ImageSlideItem) {
                 .into(this)
         }
     } catch (e: Exception) {
+    }
+}
+
+
+open class ImageSlideActivity : AppCompatActivity(), ImageSlideFragment.ImageSlideCallBack {
+
+    protected val imageSlideFragment: ImageSlideFragment = ImageSlideFragment()
+    protected var systemUiVisibility: Int = 0
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        systemUiVisibility = this.window.decorView.systemUiVisibility
+    }
+
+    fun initImageSlideFragment(id: Int) {
+        if (supportFragmentManager.findFragmentByTag("image_slide") == null) {
+            supportFragmentManager
+                .beginTransaction()
+                .add(id, imageSlideFragment, "image_slide")
+                .hide(imageSlideFragment)
+                .commit()
+            imageSlideFragment.setCallBack(this)
+        }
+        supportFragmentManager.executePendingTransactions()
+    }
+
+    fun setFullscreen(fullscreen: Boolean) {
+        var flags = systemUiVisibility
+        if (fullscreen) {
+            flags = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_FULLSCREEN or
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+                    View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        }
+        this.window.decorView.systemUiVisibility = flags
+    }
+
+    fun showImageSlide(images: ArrayList<ImageSlideItem>, index: Int) {
+        imageSlideFragment.setImages(images)
+        imageSlideFragment.setSelected(index)
+        this.supportFragmentManager.beginTransaction().show(imageSlideFragment)
+            .commit()
+    }
+
+    override fun onImageSlideHide(hide: Boolean) {
+        if (hide) {
+            this.setFullscreen(false)
+            this.window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        } else {
+            this.setFullscreen(true)
+            this.window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        }
+    }
+
+    override fun onImageSlideLongClick(image: ImageSlideItem, index: Int) {
+    }
+
+    override  fun onImageSliceSelected(index: Int) {
     }
 }
