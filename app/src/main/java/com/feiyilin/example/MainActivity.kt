@@ -39,6 +39,8 @@ class MainActivity : ImageSlideActivity() {
                 ).apply {
                 }
         }
+
+        // pics from https://www.pexels.com/search/animals/
         data.add(R.drawable.image1)
         data.add(R.drawable.image2)
         data.add(R.drawable.image3)
