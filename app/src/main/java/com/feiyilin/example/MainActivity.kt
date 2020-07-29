@@ -47,7 +47,7 @@ class MainActivity : ImageSlideActivity() {
         data.add(R.drawable.image4)
         data.add(R.drawable.image5)
 
-        initImageSlideFragment(R.id.main_container)
+        initImageSlideFragment(R.id.imageslide_fragment)
     }
 
     private var onImageItemClickListener = object :
@@ -85,7 +85,7 @@ class MainActivity : ImageSlideActivity() {
         Picasso.get().load(image.resId).into(target)
     }
 
-    override fun onImageSliceSelected(index: Int) {
+    override fun onImageSlideSelected(image: ImageSlideItem, index: Int) {
     }
 
     private val target = object : com.squareup.picasso.Target {

@@ -150,7 +150,7 @@ open class ImageSlideFragment : Fragment(), PullFrameLayout.Callback {
     interface ImageSlideCallBack {
         fun onImageSlideHide(hide: Boolean)
         fun onImageSlideLongClick(image: ImageSlideItem, index: Int)
-        fun onImageSliceSelected(index: Int)
+        fun onImageSlideSelected(image: ImageSlideItem, index: Int)
     }
 
     private var callback: ImageSlideCallBack? = null
@@ -206,7 +206,10 @@ open class ImageSlideFragment : Fragment(), PullFrameLayout.Callback {
             }
 
             override fun onPageSelected(position: Int) {
-                callback?.onImageSliceSelected(position)
+                if (position > 0 && position <= this@ImageSlideFragment.images.size) {
+                    val index = position - 1
+                    callback?.onImageSlideSelected(this@ImageSlideFragment.images[index], index)
+                }
             }
 
             override fun onPageScrollStateChanged(state: Int) {}
@@ -390,6 +393,6 @@ open class ImageSlideActivity : AppCompatActivity(), ImageSlideFragment.ImageSli
     override fun onImageSlideLongClick(image: ImageSlideItem, index: Int) {
     }
 
-    override  fun onImageSliceSelected(index: Int) {
+    override fun onImageSlideSelected(image: ImageSlideItem, index: Int) {
     }
 }
