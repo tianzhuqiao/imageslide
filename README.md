@@ -18,7 +18,7 @@ Add **imageslide** to dependencies in your app's build.gradle:
 ```gradle
 dependencies {
     ...
-    implementation 'com.feiyilin:imageslide:0.1'
+    implementation 'com.feiyilin:imageslide:0.1.1'
 }
 ```
 ## 2. Update layout xml
@@ -71,6 +71,31 @@ class MainActivity : ImageSlideActivity() {
             // show imageslide
             showImageSlide(images, index)
         }
+    }
+}
+```
+**imageslide** uses [Picasso](https://square.github.io/picasso/) to load the image. So you can also load a image from a file or url.
+```kotlin
+    // add drawable resource
+    val itemDrawable = ImageSlideItem()
+    itemDrawable.resId = image
+    // add file resource
+    val itemFile = ImageSlideItem()
+    itemFile.path = "file:///android_asset/myimage.png"
+    // add url resource
+    val itemUrl = ImageSlideItem()
+    itemUrl.path = url
+```
+
+Event callback
+```kotlin
+class MainActivity : ImageSlideActivity() {
+    ...
+    override fun onImageSlideLongClick(image: ImageSlideItem, index: Int) {
+        // long click on index-th page
+    }
+    override fun onImageSlideSelected(image: ImageSlideItem, index: Int) {
+        // switch to index-th page
     }
 }
 ```
