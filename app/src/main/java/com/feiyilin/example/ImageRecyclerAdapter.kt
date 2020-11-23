@@ -60,8 +60,8 @@ class ImageViewHolder(inflater: LayoutInflater, resource:Int, parent: ViewGroup)
         msgView?.setOnClickListener { listener?.onItemImageClick(index) }
         msgView?.let {
             Picasso.get().load(image).noFade()
-                .placeholder(R.drawable.default_image_placeholder)
-                .error(R.drawable.default_image_placeholder)
+                .placeholder(R.drawable.ic_imageslide_placeholder)
+                .error(R.drawable.ic_imageslide_placeholder)
                 .fit()
                 .centerInside()
                 .into(it)

@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.feiyilin.imageslide.ImageSlideActivity
+import com.feiyilin.imageslide.ImageSlideCallBack
 import com.feiyilin.imageslide.ImageSlideItem
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
@@ -63,29 +64,34 @@ class MainActivity : ImageSlideActivity() {
         }
     }
 
-    override fun onImageSlideLongClick(image: ImageSlideItem, index: Int) {
+    override  val imageSlideCallback = object : ImageSlideCallBack {
+        override fun onImageSlideHide(hide: Boolean) {
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-            // Should we show an explanation?
-            if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                // Explain to the user why we need to read the contacts
+        }
+        override fun onImageSlideLongClick(image: ImageSlideItem, index: Int) {
+
+            if (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED
+            ) {
+                // Should we show an explanation?
+                if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    // Explain to the user why we need to read the contacts
+                }
+                ActivityCompat.requestPermissions(
+                    this@MainActivity,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1
+                )
+
+                // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
+                // app-defined int constant that should be quite unique
+                return
             }
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1
-            )
 
-            // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
-            // app-defined int constant that should be quite unique
-            return
+            Picasso.get().load(image.resId).into(target)
         }
 
-        Picasso.get().load(image.resId).into(target)
-    }
-
-    override fun onImageSlideSelected(image: ImageSlideItem, index: Int) {
+        override fun onImageSlideSelected(image: ImageSlideItem, index: Int) {
+        }
     }
 
     private val target = object : com.squareup.picasso.Target {

@@ -33,7 +33,7 @@
         app:piv_interactiveAnimation="true"/>
 
     <ImageButton
-        android:id="@+id/slide_close_btn"
+        android:id="@+id/imageSlideCloseBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -42,6 +42,6 @@
         android:padding="5dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_round_close_24px" />
+        app:srcCompat="@drawable/ic_imageslide_close" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
