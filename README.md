@@ -18,7 +18,7 @@ Add **imageslide** to dependencies in your app's build.gradle:
 ```gradle
 dependencies {
     ...
-    implementation 'com.feiyilin:imageslide:0.1.1'
+    implementation 'com.feiyilin:imageslide:0.1.2'
 }
 ```
 ## 2. Update layout xml
@@ -56,46 +56,56 @@ class MainActivity : ImageSlideActivity() {
         initImageSlideFragment(R.id.imageslide_fragment)
     }
 ```
-Show imageslide by calling **showImageSlide**, e.g.,
+
+Show imageslide by calling **show**, e.g.,
 ```kotlin
-class MainActivity : ImageSlideActivity() {
-    private var onImageItemClickListener = object :
-        OnImageItemClickListener {
-        override fun onItemImageClick(index: Int) {
-            val images: ArrayList<ImageSlideItem> = arrayListOf()
-            for (image in data) {
-                val item = ImageSlideItem()
-                item.resId = image
-                images.add(item)
-            }
-            // show imageslide
-            showImageSlide(images, index)
-        }
-    }
+val images = mutableListOf<ImageSlideItem>()
+for (image in data) {
+   val item = ImageSlideResItem().image(image)
+   images.add(item)
 }
-```
-**imageslide** uses [Picasso](https://square.github.io/picasso/) to load the image. So you can also load a image from a file or url.
-```kotlin
-    // add drawable resource
-    val itemDrawable = ImageSlideItem()
-    itemDrawable.resId = image
-    // add file resource
-    val itemFile = ImageSlideItem()
-    itemFile.path = "file:///android_asset/myimage.png"
-    // add url resource
-    val itemUrl = ImageSlideItem()
-    itemUrl.path = url
+imageSlideFragment.show(images, index)
 ```
 
-Event callback
+# ImageSlideItem
+* **ImageSlideResItem** is to load image from resource id
 ```kotlin
-class MainActivity : ImageSlideActivity() {
+    val item = ImageSlideItem().image(imageResId)
+```
+* **ImageSlideResItem** is to load image from path string
+```kotlin
+    // add file resource
+    val item = ImageSlidePathItem().image("file:///android_asset/myimage.png")
+    // add url resource
+    val item2 = ImageSlidePathItem().image(url)
+```
+
+To create a custom imageslide item
+1. derive a custom item from ImageSlideItem() 
+```kotlin
+open class ImageSlideCustomItem: ImageSlideItem() {
+...
+}
+```
+2. override **load** function to load the image into an **ImageView**
+```kotlin
+open class ImageSlideCustomItem: ImageSlideItem() {
     ...
-    override fun onImageSlideLongClick(image: ImageSlideItem, index: Int) {
-        // long click on index-th page
-    }
-    override fun onImageSlideSelected(image: ImageSlideItem, index: Int) {
-        // switch to index-th page
+    override fun load(view: ImageView?) {
+        ...
     }
 }
 ```
+
+# Callbacks
+* **onImageSlideHide**
+
+    called when imageslide fragment is shown/hidden
+    
+* **onImageSlideLongClick**
+
+    called when long-click on an image
+    
+* **onImageSlideSelected**
+
+    called when switch to a page
