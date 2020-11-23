@@ -18,7 +18,7 @@ interface ImageSlideCallBack {
 
 open class ImageSlideFragment : Fragment() {
 
-    protected var systemUiVisibility: Int = 0
+    protected var systemUiVisibility: Int? = null
 
     protected var imageSlideCallback: ImageSlideCallBack? = null
     var _images = listOf<ImageSlideItem>()
@@ -131,12 +131,13 @@ open class ImageSlideFragment : Fragment() {
     fun setFullscreen(fullscreen: Boolean) {
         var flags = systemUiVisibility
         if (fullscreen) {
-
             flags = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_FULLSCREEN or
                     View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
                     View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
         }
-        activity?.window?.decorView?.systemUiVisibility = flags
+        if (flags != null) {
+            activity?.window?.decorView?.systemUiVisibility = flags
+        }
     }
 
      protected fun onImageSlideHide(hide: Boolean) {
@@ -154,7 +155,7 @@ open class ImageSlideFragment : Fragment() {
 
         if(!hidden) {
             // save the flag for later
-            systemUiVisibility = activity?.window?.decorView?.systemUiVisibility ?: 0
+            systemUiVisibility = activity?.window?.decorView?.systemUiVisibility
         }
 
         onImageSlideHide(hidden)
