@@ -81,7 +81,7 @@ imageSlideFragment.show(images, index)
 ```
 
 To create a custom imageslide item
-1. derive a custom item from ImageSlideItem() 
+1. derive a custom item from **ImageSlideItem** 
 ```kotlin
 open class ImageSlideCustomItem: ImageSlideItem() {
 ...
