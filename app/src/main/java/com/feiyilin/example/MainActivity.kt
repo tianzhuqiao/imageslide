@@ -13,7 +13,7 @@ import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.feiyilin.imageslide.ImageSlideActivity
 import com.feiyilin.imageslide.ImageSlideCallBack
-import com.feiyilin.imageslide.ImageSlideItem
+import com.feiyilin.imageslide.*
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.ByteArrayOutputStream
@@ -56,11 +56,10 @@ class MainActivity : ImageSlideActivity() {
         override fun onItemImageClick(index: Int) {
             val images: ArrayList<ImageSlideItem> = arrayListOf()
             for (image in data) {
-                val item = ImageSlideItem()
-                item.resId = image
+                val item = ImageSlideResItem().image(image)
                 images.add(item)
             }
-            showImageSlide(images, index)
+            imageSlideFragment.show(images, index)
         }
     }
 
@@ -69,7 +68,7 @@ class MainActivity : ImageSlideActivity() {
 
         }
         override fun onImageSlideLongClick(image: ImageSlideItem, index: Int) {
-
+            // long click to share the image
             if (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED
             ) {
@@ -86,8 +85,9 @@ class MainActivity : ImageSlideActivity() {
                 // app-defined int constant that should be quite unique
                 return
             }
-
-            Picasso.get().load(image.resId).into(target)
+            if (image is ImageSlideResItem) {
+                Picasso.get().load(image.image).into(target)
+            }
         }
 
         override fun onImageSlideSelected(image: ImageSlideItem, index: Int) {
