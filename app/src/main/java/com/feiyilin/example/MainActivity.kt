@@ -54,12 +54,13 @@ class MainActivity : ImageSlideActivity() {
     private var onImageItemClickListener = object :
         OnImageItemClickListener {
         override fun onItemImageClick(index: Int) {
-            val images: ArrayList<ImageSlideItem> = arrayListOf()
+            val images = mutableListOf<ImageSlideItem>()
             for (image in data) {
                 val item = ImageSlideResItem().image(image)
                 images.add(item)
             }
-            imageSlideFragment.show(images, index)
+            //images.add(ImageSlidePathItem().image("http://i.imgur.com/DvpvklR.png"))
+            imageSlideFragment?.show(images, index)
         }
     }
 

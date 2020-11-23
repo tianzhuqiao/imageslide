@@ -1,21 +1,31 @@
 package com.feiyilin.imageslide
 
+import android.content.res.Configuration
+import android.os.Bundle
+import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
 
 open class ImageSlideActivity : AppCompatActivity() {
 
-    val imageSlideFragment: ImageSlideFragment = ImageSlideFragment()
+    var imageSlideFragment: ImageSlideFragment? = null
 
     fun initImageSlideFragment(id: Int, tag: String = "image_slide") {
         if (supportFragmentManager.findFragmentByTag(tag) == null) {
+            val fragment = ImageSlideFragment()
             supportFragmentManager
                 .beginTransaction()
-                .add(id, imageSlideFragment, tag)
-                .hide(imageSlideFragment)
+                .add(id, fragment, tag)
+                .hide(fragment)
                 .commit()
-            imageSlideFragment.setCallBack(imageSlideCallback)
+            imageSlideFragment = fragment
+
+        } else {
+            imageSlideFragment = supportFragmentManager.findFragmentByTag(tag) as? ImageSlideFragment
         }
+        imageSlideFragment?.setCallBack(imageSlideCallback)
+        imageSlideFragment?.close()
         supportFragmentManager.executePendingTransactions()
+
     }
 
     open val imageSlideCallback: ImageSlideCallBack? = null

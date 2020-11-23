@@ -9,7 +9,6 @@ import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.asksira.loopingviewpager.LoopingPagerAdapter
 import com.ortiz.touchview.TouchImageView
 import kotlinx.android.synthetic.main.imageslide_fragment.*
-import kotlin.collections.ArrayList
 
 interface ImageSlideCallBack {
     fun onImageSlideHide(hide: Boolean) {}
@@ -55,12 +54,6 @@ open class ImageSlideFragment : Fragment() {
 
     fun close() {
         this.activity?.supportFragmentManager?.beginTransaction()?.hide(this)?.commit()
-    }
-
-    fun setImages(images: ArrayList<ImageSlideItem>) {
-        this.images = images
-        adapter?.setImages(images)
-        pageIndicatorView?.count = viewPager?.indicatorCount ?: 0
     }
 
     fun setSelected(index: Int) {
@@ -182,8 +175,8 @@ open class ImageSlideFragment : Fragment() {
         }
     }
 
-    fun show(images: ArrayList<ImageSlideItem>, index: Int) {
-        setImages(images)
+    fun show(images: List<ImageSlideItem>, index: Int) {
+        this.images = images
         setSelected(index)
         activity?.let {
             it.supportFragmentManager.beginTransaction().show(this).commit()

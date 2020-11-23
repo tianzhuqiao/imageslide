@@ -19,7 +19,7 @@ fun <T : ImageSlideItem> T.error(res: Int) = apply {
     this.error = res
 }
 
-open class ImageSlideResItem: ImageSlideItem() {
+open class ImageSlideResItem : ImageSlideItem() {
     var image: Int = 0
 
     override fun load(view: ImageView?) {
@@ -45,7 +45,7 @@ fun <T : ImageSlideResItem> T.image(res: Int) = apply {
     this.image = res
 }
 
-open class ImageSlidePathItem: ImageSlideItem() {
+open class ImageSlidePathItem : ImageSlideItem() {
     var image: String = ""
 
     override fun load(view: ImageView?) {
