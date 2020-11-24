@@ -70,9 +70,9 @@ imageSlideFragment.show(images, index)
 # ImageSlideItem
 * **ImageSlideResItem** is to load image from resource id
 ```kotlin
-    val item = ImageSlideItem().image(imageResId)
+    val item = ImageSlideResItem().image(imageResId)
 ```
-* **ImageSlideResItem** is to load image from path string
+* **ImageSlidePathItem** is to load image from path string
 ```kotlin
     // add file resource
     val item = ImageSlidePathItem().image("file:///android_asset/myimage.png")
@@ -100,12 +100,12 @@ open class ImageSlideCustomItem: ImageSlideItem() {
 # Callbacks
 * **onImageSlideHide**
 
-    called when imageslide fragment is shown/hidden
+    Called when imageslide fragment is shown/hidden.
     
 * **onImageSlideLongClick**
 
-    called when long-click on an image
+    Called when long-click on an image.
     
 * **onImageSlideSelected**
 
-    called when switch to a page
+    Called when switch to a page.
