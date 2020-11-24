@@ -67,17 +67,18 @@ for (image in data) {
 imageSlideFragment.show(images, index)
 ```
 
+Or check [ImageSlideActivity](./imageslide/src/main/java/com/feiyilin/imageslide/ImageSlideActivity.kt) if you want to use **ImageSlideFragment** directly in the activity.
 # ImageSlideItem
 * **ImageSlideResItem** is to load image from resource id
 ```kotlin
-    val item = ImageSlideResItem().image(imageResId)
+val item = ImageSlideResItem().image(imageResId)
 ```
 * **ImageSlidePathItem** is to load image from path string
 ```kotlin
-    // add file resource
-    val item = ImageSlidePathItem().image("file:///android_asset/myimage.png")
-    // add url resource
-    val item2 = ImageSlidePathItem().image(url)
+// add file resource
+val item = ImageSlidePathItem().image("file:///android_asset/myimage.png")
+// add url resource
+val item2 = ImageSlidePathItem().image("http://i.imgur.com/DvpvklR.png")
 ```
 
 To create a custom imageslide item
